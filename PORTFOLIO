@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume - Gibran BANHAKEIA</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #c71a29, #1919a0);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            perspective: 1500px;
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dark-mode {
+            background: linear-gradient(45deg, #001f3f, #ff0022);
+            color: #ffffff;
+        }
+
+        .mood-blue-red {
+            background: linear-gradient(45deg, #0000ff, #ff0000);
+            color: #ffffff;
+        }
+
+        .mood-glass {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: #000000;
+        }
+
+        .resume-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.6s, background-color 0.6s, box-shadow 0.6s;
+            border-radius: 10px;
+            perspective: 1000px;
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .resume-container:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+            background-color: #ffffff;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .header:hover {
+            transform: translateZ(20px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .photo img:hover {
+            transform: rotate(10deg) scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-info {
+            flex: 1;
+            transition: transform 0.6s, text-shadow 0.6s;
+        }
+
+        .contact-info h1 {
+            margin: 0 0 10px;
+            font-size: 36px;
+            color: #007bff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            transform: translateZ(20px);
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 18px;
+            transform: translateZ(10px);
+        }
+
+        .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: text-shadow 0.3s, color 0.3s;
+        }
+
+        .contact-info a:hover {
+            text-shadow: 0 0 5px #007bff;
+            color: #0056b3;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .navbar button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .navbar button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            perspective: 1500px;
+        }
+
+        .section {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.6s, opacity 0.6s;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            transform: translateZ(20px);
+            font-size: 32px;
+        }
+
+        .section p, .section ul {
+            margin: 15px 0;
+            transform: translateZ(10px);
+            font-size: 18px;
+        }
+
+        .section ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        .active-section {
+            display: block;
+            transform: scale(1.2) translateZ(100px) rotateX(10deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .inactive-section {
+            transform: scale(0.8) translateZ(-100px) rotateX(-10deg);
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        #summary {
+            display: block;
+        }
+
+        .toggle-switch, .mood-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            cursor: pointer;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        .mood-toggle {
+            right: 100px;
+        }
+
+        .toggle-switch:hover, .mood-toggle:hover {
+            background: #260690;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #007bff;
+            z-index: 1000;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .testimonials:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .testimonial {
+            margin-bottom: 10px;
+        }
+
+        .testimonial h3 {
+            margin: 0 0 5px;
+            font-size: 20px;
+        }
+
+        .testimonial p {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .contact-form:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transform: translateZ(10px);
+            font-size: 18px;
+        }
+
+        .contact-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Download Button */
+        .download-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .download-button a {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .download-button a:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Typewriter Effect */
+        .typewriter h2 {
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+            transform: translateZ(20px);
+            font-size: 32px;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: orange;
+            }
+        }
+
+        /* Animated Counters */
+        .counters {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .counters:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .counter {
+            text-align: center;
+        }
+
+        .counter h3 {
+            font-size: 2em;
+        }
+
+        .counter p {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            transform: translateZ(40px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .modal-content:hover {
+            transform: translateZ(60px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* PWA Install Button */
+        .install-button {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .install-button:hover {
+            background: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            left: 80px;
+            cursor: pointer;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .language-selector:hover {
+            background: #0056b3;
+        }
+
+        /* 3D Text Animation */
+        #text-animation-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* 3D Chatbot Box */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+        }
+
+        .chatbot:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .chatbot-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .chatbot-input button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .chatbot-input button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .lightbox img {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .lightbox:target {
+            display: block;
+        }
+
+        /* Carousel */
+        .carousel {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: auto;
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Language Proficiency */
+        .languages {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateZ(20px);
+            transition: transform 0.6s, box-shadow 0.6s;
+            margin-top: 20px;
+        }
+
+        .languages:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .languages h2 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            transform: translateZ(20px);
+            font-size: 32px;
+        }
+
+        .language {
+            margin: 10px 0;
+        }
+
+        .language label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 5px 0;
+            transform: translateZ(10px);
+        }
+
+        .progress-bar .progress {
+            height: 20px;
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        .progress-blue {
+            background-color: #007bff;
+        }
+
+        .progress-green {
+            background-color: #28a745;
+        }
+
+        .progress-red {
+            background-color: #dc3545;
+        }
+
+        /* Pie Chart Container */
+        .pie-chart-container {
+            width: 100%;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 50px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateZ(50px);
+            transition: transform 0.8s, box-shadow 0.8s;
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pie-chart-container:hover {
+            transform: translateZ(50px);
+            box-shadow: 0 14px 24px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline/dist/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.6.3/dist/umd/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@6.1.2/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-xhr-backend@3.2.2/dist/umd/i18nextXHRBackend.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+
+<body>
+    <div id="particles-js" class="video-background"></div>
+    <div id="progress-bar"></div>
+    <button class="toggle-switch" onclick="toggleDarkMode(); playClickSound();">Toggle Dark Mode</button>
+    <button class="mood-toggle" onclick="toggleMood(); playClickSound();">Mood</button>
+    <button class="language-selector" onclick="toggleLanguage(); playClickSound();">EN</button>
+    <div class="resume-container">
+        <div class="main-content">
+            <header class="header">
+                <div class="photo">
+                    <img src="https://media.licdn.com/dms/image/D4E03AQEL7N_-0eK2VQ/profile-displayphoto-shrink_400_400/0/1702919910756?e=1727308800&v=beta&t=TR8A3dE-iRsxh30W4uPURT8mzaYsrmw7w5oq0c9WVXQ" alt="Gibran BANHAKEIA">
+                </div>
+                <div class="contact-info">
+                    <h1>Gibran BANHAKEIA, PhD</h1>
+                    <p>Email: <a href="mailto:gibraninter@protonmail.com">gibraninter@protonmail.com</a></p>
+                    <p>Email: <a href="mailto:gibranbtraduction@gmail.com">gibranbtraduction@gmail.com</a></p>
+                    <p>Phone: <a href="tel:063-692-1479">063-692-1479</a></p>
+                    <p>LinkedIn: <a href="https://www.linkedin.com/in/gibran-banhakeia-phd-306a361a4/" target="_blank">linkedin.com/in/gibran-banhakeia-phd-306a361a4/</a></p>
+                </div>
+            </header>
+
+            <nav class="navbar">
+                <button onclick="showSection('summary'); playClickSound();">Summary</button>
+                <button onclick="showSection('experience'); playClickSound();">Experience</button>
+                <button onclick="showSection('education'); playClickSound();">Education</button>
+                <button onclick="showSection('skills'); playClickSound();">Skills</button>
+                <button onclick="showSection('projects'); playClickSound();">Projects</button>
+                <button onclick="showSection('timeline'); playClickSound();">Timeline</button>
+                <button onclick="showSection('testimonials'); playClickSound();">Testimonials</button>
+                <button onclick="showSection('contact'); playClickSound();">Contact</button>
+                <button onclick="showSection('faq'); playClickSound();">FAQ</button>
+            </nav>
+
+            <main class="content">
+                <section id="summary" class="section active-section typewriter">
+                    <h2>Computational Linguist & Translator</h2>
+                </section>
+                <section id="experience" class="section">
+                    <h2>Experience</h2>
+                    <h3>Polyglot Translator</h3>
+                    <p>New York Circle for Translators - January 2018 to Present</p>
+                    <p>Leading a team of linguists in analyzing large datasets to improve machine translation and natural language processing models. Developed a new framework for evaluating linguistic accuracy, resulting in a 20% increase in model performance.</p>
+                    <h3>Linguist & Translator</h3>
+                    <p>IAPTI - June 2018 to Present</p>
+                    <p>Conducted extensive research on language patterns and text analysis. Collaborated with interdisciplinary teams to publish findings in peer-reviewed journals. Presented research at international conferences, enhancing the company's reputation in the field.</p>
+                    <h3>Polyglot Translator</h3>
+                    <p>Translator within UNDP for National Biodiversity Targets (French to English) - January 2023 to Mars 2023</p>
+                    <p>Translation and Proofreading tasks from English to Spanish</p>
+                </section>
+                <section id="education" class="section">
+                    <h2>Education</h2>
+                    <p>PhD in North African Studies - University of Lorraine - November 2021 to Present</p>
+                    <p>Master of Translation and Literature - Faculty of Nador - 2017 to 2020</p>
+                    <p>Master of World Literature and Comparative Studies - Paris University - 2019 to 2020</p>
+                </section>
+                <section id="skills" class="section">
+                    <h2>Skills</h2>
+                    <div class="skill">
+                        <label for="Translation Studies">Translation Studies</label>
+                        <progress id="Translation Studies" value="90" max="100"></progress>
+                    </div>
+                    <div class="skill">
+                        <label for="Proofreading">Proofreading</label>
+                        <progress id="Proofreading" value="85" max="100"></progress>
+                    </div>
+                    <div class="skill">
+                        <label for="HTML Developing">HTML Developing</label>
+                        <progress id="HTML Developing" value="80" max="100"></progress>
+                    </div>
+                    <div class="skill">
+                        <label for="Multi-tasks">Multi-tasks</label>
+                        <progress id="Multi-tasks" value="75" max="100"></progress>
+                    </div>
+                    <div class="skill">
+                        <label for="Team-spirit">Team-spirit</label>
+                        <progress id="Team-spirit" value="70" max="100"></progress>
+                    </div>
+                    <div class="skill">
+                        <label for="project-management">Project Management</label>
+                        <progress id="project-management" value="65" max="100"></progress>
+                    </div>
+                </section>
+                <section id="projects" class="section">
+                    <h2>Projects</h2>
+                    <h3><a href="javascript:void(0)" onclick="openModal('project1'); playClickSound();">Translation Studies & NLP</a></h3>
+                    <p>Developed Translating Strategies, Developed and implemented new ways to enhance the performance of natural language processing models, resulting in a 30% reduction in error rates.</p>
+                    <h3><a href="javascript:void(0)" onclick="openModal('project2'); playClickSound();">AI Training and Translating Complex Tasks</a></h3>
+                    <p>Designed a comprehensive tool for translating, training and analyzing language data, which was adopted by several research teams for their studies. The tool's user-friendly interface and robust features greatly improved the efficiency of data analysis workflows.</p>
+                </section>
+                <section id="timeline" class="section">
+                    <h2>Timeline</h2>
+                    <div id="timeline"></div>
+                </section>
+                <section id="testimonials" class="section testimonials">
+                    <h2>Testimonials</h2>
+                    <div class="testimonial">
+                        <h3>John Doe, Colleague</h3>
+                        <p>Gibran is a highly skilled linguistics analyst with a keen eye for detail. His innovative approach to problem-solving has been a great asset to our team.</p>
+                    </div>
+                    <div class="testimonial">
+                        <h3>Jane Smith, Manager</h3>
+                        <p>Working with Gibran has been a pleasure. His dedication and expertise in applied linguistics are truly impressive.</p>
+                    </div>
+                </section>
+                <section id="contact" class="section contact-form">
+                    <h2>Contact</h2>
+                    <form>
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                        <button type="submit" onclick="playClickSound();">Send</button>
+                    </form>
+                </section>
+                <section id="counters" class="section counters">
+                    <div class="counter">
+                        <h3 id="yearsExperience">0</h3>
+                        <p>Years of Experience</p>
+                    </div>
+                    <div class="counter">
+                        <h3 id="projectsCompleted">0</h3>
+                        <p>Projects Completed</p>
+                    </div>
+                </section>
+                <section id="faq" class="section faq">
+                    <h2>FAQ</h2>
+                    <h3 onclick="toggleFAQ('faq1'); playClickSound();">What is your educational background?</h3>
+                    <p id="faq1">I have a PhD in Applied Linguistics from the University of Example, and a Master of Science in Computational Linguistics from the same institution.</p>
+                    <h3 onclick="toggleFAQ('faq2'); playClickSound();">What are your main skills?</h3>
+                    <p id="faq2">My main skills include data analysis, natural language processing, machine learning, Python, R, and project management.</p>
+                    <h3 onclick="toggleFAQ('faq3'); playClickSound();">Can I contact you for collaboration?</h3>
+                    <p id="faq3">Yes, please use the contact form above to get in touch with me regarding collaboration opportunities.</p>
+                </section>
+                <section id="3d-model" class="section three-js-container">
+                    <h2>3D Model Viewer</h2>
+                    <div id="three-js-container"></div>
+                </section>
+            </main>
+
+            <div class="download-button">
+                <a href="path/to/your/resume.pdf" download onclick="playClickSound();">Download Full Resume (PDF)</a>
+            </div>
+
+            <!-- Modal for Project 1 -->
+            <div id="project1" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('project1'); playClickSound();">&times;</span>
+                    <h2>Project 1: NLP Model Improvement</h2>
+                    <p>Developed and implemented new algorithms to enhance the performance of natural language processing models, resulting in a 30% reduction in error rates.</p>
+                </div>
+            </div>
+
+            <!-- Modal for Project 2 -->
+            <div id="project2" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('project2'); playClickSound();">&times;</span>
+                    <h2>Project 2: Language Data Analysis Tool</h2>
+                    <p>Designed a comprehensive tool for analyzing language data, which was adopted by several research teams for their studies. The tool's user-friendly interface and robust features greatly improved the efficiency of data analysis workflows.</p>
+                </div>
+            </div>
+
+            <!-- Language Proficiency Section -->
+            <section class="languages">
+                <h2>Languages I Master</h2>
+                <div class="language">
+                    <label for="english">English</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-blue" style="width: 95%;"></div>
+                    </div>
+                </div>
+                <div class="language">
+                    <label for="french">French</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-green" style="width: 90%;"></div>
+                    </div>
+                </div>
+                <div class="language">
+                    <label for="spanish">Spanish</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-red" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="language">
+                    <label for="arabic">Arabic</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-blue" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="language">
+                    <label for="berber">Berber</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-green" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="language">
+                    <label for="russian">Russian</label>
+                    <div class="progress-bar">
+                        <div class="progress progress-red" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificates Section -->
+            <div class="pie-chart-container">
+                <canvas id="certificatesPieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Pie Chart Section -->
+        <div class="right-side">
+            <div class="pie-chart-container">
+                <canvas id="competencePieChart"></canvas>
+            </div>
+            <div class="pie-chart-container">
+                <canvas id="softwarePieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for button click sound -->
+    <audio id="button-sound" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg" preload="auto"></audio>
+
+    <audio id="background-audio" loop>
+        <source src="path/to/your/sound.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- PWA Install Button -->
+    <button class="install-button" id="installButton" onclick="playClickSound();">Install App</button>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot">
+        <div class="chatbot-header">Ask Me Anything!</div>
+        <div class="chatbot-messages" id="chatbotMessages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your message here...">
+            <button onclick="sendMessage(); playClickSound();">Send</button>
+        </div>
+    </div>
+
+    <div id="text-animation-container"></div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        }
+
+        let moodCounter = 0;
+        function toggleMood() {
+            moodCounter++;
+            if (moodCounter === 1) {
+                document.body.classList.add('mood-blue-red');
+                document.body.classList.remove('mood-glass');
+            } else if (moodCounter === 2) {
+                document.body.classList.add('mood-glass');
+                document.body.classList.remove('mood-blue-red');
+            } else {
+                document.body.classList.remove('mood-blue-red');
+                document.body.classList.remove('mood-glass');
+                moodCounter = 0;
+            }
+        }
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.add('active-section');
+                    section.classList.remove('inactive-section');
+                } else {
+                    section.classList.remove('active-section');
+                    section.classList.add('inactive-section');
+                }
+            });
+        }
+
+        // Smooth scroll to section
+        document.querySelectorAll('.navbar button').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Play background audio
+        window.onload = function() {
+            const audio = document.getElementById('background-audio');
+            audio.play();
+            updateCounters();
+            const darkMode = localStorage.getItem('dark-mode');
+            if (darkMode === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+        };
+
+        // Play click sound
+        function playClickSound() {
+            const clickSound = document.getElementById('button-sound');
+            clickSound.play();
+        }
+
+        // Dynamic Skills Progress Bars
+        const skills = {
+            "Data Analysis": 90,
+            "NLP": 85,
+            "Machine Learning": 80,
+            "Python": 75,
+            "R": 70,
+            "Project Management": 65
+        };
+
+        for (let skill in skills) {
+            const skillElement = document.getElementById(skill.toLowerCase().replace(" ", "-"));
+            if (skillElement) {
+                skillElement.value = skills[skill];
+            }
+        }
+
+        // Timeline initialization using Vis.js
+        const container = document.getElementById('timeline');
+        const items = new vis.DataSet([
+            { id: 1, content: 'Phd in North African Studies', start: '2021-11-11' },
+            { id: 2, content: 'Master of Translation and Literature', start: '2018-01-01', end: '2020-07-07' },
+            { id: 3, content: 'Master of WL and Comparative Studies', start: '2020-06-01', end: '2021-07-31' },
+            { id: 4, content: 'Translator for IAPTI and New Circle for Translators', start: '2023-01-01' }
+        ]);
+        const options = {
+            min: '2021-01-01',
+            max: '2024-12-31',
+            start: '2021-01-01',
+            end: '2024-12-31',
+        };
+        const timeline = new vis.Timeline(container, items, options);
+
+        // Update progress bar on scroll
+        window.onscroll = function () {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        }
+
+        // Update counters
+        function updateCounters() {
+            const yearsExperience = document.getElementById('yearsExperience');
+            const projectsCompleted = document.getElementById('projectsCompleted');
+
+            animateCounter(yearsExperience, 7); // Assume 7 years of experience
+            animateCounter(projectsCompleted, 20); // Assume 20 projects completed
+        }
+
+        // Animate counter
+        function animateCounter(element, value) {
+            let counter = 0;
+            const interval = setInterval(() => {
+                if (counter < value) {
+                    counter++;
+                    element.textContent = counter;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        }
+
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+        });
+
+        installButton.addEventListener('click', (e) => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                } else {
+                    console.log('User dismissed the A2HS prompt');
+                }
+                deferredPrompt = null;
+                installButton.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('a2hs installed');
+        });
+
+        // Toggle FAQ
+        function toggleFAQ(id) {
+            const faq = document.getElementById(id);
+            faq.style.display = faq.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Toggle Language
+        function toggleLanguage() {
+            const langButton = document.querySelector('.language-selector');
+            if (langButton.textContent === 'EN') {
+                langButton.textContent = 'FR';
+                // Translate to French (example, you would need actual translation)
+                document.querySelectorAll('.navbar button').forEach(btn => {
+                    if (btn.textContent === 'Summary') btn.textContent = 'Résumé';
+                    if (btn.textContent === 'Experience') btn.textContent = 'Expérience';
+                    if (btn.textContent === 'Education') btn.textContent = 'Éducation';
+                    if (btn.textContent === 'Skills') btn.textContent = 'Compétences';
+                    if (btn.textContent === 'Projects') btn.textContent = 'Projets';
+                    if (btn.textContent === 'Timeline') btn.textContent = 'Chronologie';
+                    if (btn.textContent === 'Testimonials') btn.textContent = 'Témoignages';
+                    if (btn.textContent === 'Contact') btn.textContent = 'Contact';
+                    if (btn.textContent === 'FAQ') btn.textContent = 'FAQ';
+                });
+                document.getElementById('contact').querySelector('h2').textContent = 'Contact';
+                document.getElementById('faq').querySelector('h2').textContent = 'FAQ';
+            } else {
+                langButton.textContent = 'EN';
+                // Translate to English
+                document.querySelectorAll('.navbar button').forEach(btn => {
+                    if (btn.textContent === 'Résumé') btn.textContent = 'Summary';
+                    if (btn.textContent === 'Expérience') btn.textContent = 'Experience';
+                    if (btn.textContent === 'Éducation') btn.textContent = 'Education';
+                    if (btn.textContent === 'Compétences') btn.textContent = 'Skills';
+                    if (btn.textContent === 'Projets') btn.textContent = 'Projects';
+                    if (btn.textContent === 'Chronologie') btn.textContent = 'Timeline';
+                    if (btn.textContent === 'Témoignages') btn.textContent = 'Testimonials';
+                    if (btn.textContent === 'Contact') btn.textContent = 'Contact';
+                    if (btn.textContent === 'FAQ') btn.textContent = 'FAQ';
+                });
+                document.getElementById('contact').querySelector('h2').textContent = 'Contact';
+                document.getElementById('faq').querySelector('h2').textContent = 'FAQ';
+            }
+        }
+
+        // Chatbot Functionality
+        function sendMessage() {
+            const messageInput = document.getElementById('chatbotInput');
+            const message = messageInput.value;
+            if (message.trim() !== '') {
+                const chatbotMessages = document.getElementById('chatbotMessages');
+                const messageElement = document.createElement('div');
+                messageElement.textContent = 'You: ' + message;
+                chatbotMessages.appendChild(messageElement);
+                messageInput.value = '';
+
+                // Simulate a response from the chatbot
+                setTimeout(() => {
+                    const responseElement = document.createElement('div');
+                    responseElement.textContent = 'Chatbot: ' + 'Thank you for your message! I will get back to you soon.';
+                    chatbotMessages.appendChild(responseElement);
+                }, 1000);
+            }
+        }
+
+        // Initialize 3D Model
+        function initThreeJS() {
+            const container = document.getElementById('three-js-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.BoxGeometry();
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        initThreeJS();
+
+        // Initialize 3D Text Animation
+        function init3DTextAnimation() {
+            const container = document.getElementById('text-animation-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const loader = new THREE.FontLoader();
+            loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+                const textGeometry1 = new THREE.TextGeometry('Gibran', {
+                    font: font,
+                    size: 80,
+                    height: 5,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 10,
+                    bevelSize: 8,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
+                const textMaterial1 = new THREE.MeshPhongMaterial({ color: 0x0000ff, shininess: 100 });
+                const textMesh1 = new THREE.Mesh(textGeometry1, textMaterial1);
+                scene.add(textMesh1);
+
+                const textGeometry2 = new THREE.TextGeometry('BANHAKEIA', {
+                    font: font,
+                    size: 80,
+                    height: 5,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 10,
+                    bevelSize: 8,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
+                const textMaterial2 = new THREE.MeshPhongMaterial({ color: 0xff1493, shininess: 100 });
+                const textMesh2 = new THREE.Mesh(textGeometry2, textMaterial2);
+                scene.add(textMesh2);
+
+                textMesh1.position.x = -500;
+                textMesh1.position.y = 50;
+                textMesh2.position.x = -150;
+                textMesh2.position.y = 50;
+
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                scene.add(ambientLight);
+
+                const pointLight = new THREE.PointLight(0xffffff, 1, 1000);
+                pointLight.position.set(50, 50, 50);
+                scene.add(pointLight);
+
+                let clock = new THREE.Clock();
+                function animate() {
+                    requestAnimationFrame(animate);
+
+                    let time = clock.getElapsedTime();
+                    textMesh1.position.y = 50 + Math.sin(time) * 200;
+                    textMesh2.position.y = 50 + Math.sin(time + Math.PI) * 200;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+            });
+
+            camera.position.z = 1000;
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        init3DTextAnimation();
+
+        // Initialize Pie Charts
+        const ctx = document.getElementById('competencePieChart').getContext('2d');
+        const competencePieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Translation Studies', 'Proofreading', 'HTML Developing', 'Multi-tasks', 'Team-spirit', 'Project Management'],
+                datasets: [{
+                    data: [90, 85, 80, 75, 70, 65],
+                    backgroundColor: [
+                        '#007bff',
+                        '#28a745',
+                        '#dc3545',
+                        '#ffc107',
+                        '#17a2b8',
+                        '#6f42c1'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            fontSize: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const softwareCtx = document.getElementById('softwarePieChart').getContext('2d');
+        const softwarePieChart = new Chart(softwareCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Crowdin', 'Trados', 'VR Translate', 'MemoQ', 'Wordfast', 'Transifex'],
+                datasets: [{
+                    data: [90, 90, 90, 90, 90, 90],
+                    backgroundColor: [
+                        '#ff6384',
+                        '#36a2eb',
+                        '#cc65fe',
+                        '#ffce56',
+                        '#ff9f40',
+                        '#4bc0c0'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            fontSize: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const certificatesCtx = document.getElementById('certificatesPieChart').getContext('2d');
+        const certificatesPieChart = new Chart(certificatesCtx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Homeland Security and Cybersecurity Future, University of Boulder Colorado',
+                    'International Security Management (Specialization) Rotterdam Erasmus University',
+                    'Terrorism and Counterterrorism, Leiden University, by Edwin Bakker',
+                    'Cybersecurity Roles, Processes & Operating System Security',
+                    'Introduction to Cybersecurity Tools & Cyber Attacks',
+                    'Inglés Empresarial: Gestión y Liderazgo Inglés Empresarial',
+                    'CISSP® - Certified Information Systems Security Professional',
+                    'Cert Prep: ISC2 Certified in Cybersecurity (CC)',
+                    'FullBridge X Communication Skills and Teamwork, EDX, Honor',
+                    'Verified Certificate - Ancient Masterpieces of World Literature - HARVARD UNIVERSITY'
+                ],
+                datasets: [{
+                    data: [90, 90, 90, 90, 90, 90, 90, 90, 90, 90],
+                    backgroundColor: [
+                        '#e6194b',
+                        '#3cb44b',
+                        '#ffe119',
+                        '#4363d8',
+                        '#f58231',
+                        '#911eb4',
+                        '#46f0f0',
+                        '#f032e6',
+                        '#bcf60c',
+                        '#fabebe'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            fontSize: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Initialize Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 200
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ffffff',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>
